@@ -6,7 +6,7 @@ select sin(pi() / 4), 1 + 2 * 3 - 4 / 5 from dual;
 -- 대소문자 구분 안한다.
 sElect VERSION(), current_DATE, NOW() froM dual;
 
--- table 생성: DML
+-- table 생성: DDL
 create table pet (
 	name varchar(100),
 	owner varchar(20),
@@ -20,17 +20,41 @@ create table pet (
 describe pet;
 desc pet;
 
--- table 삭제
--- drop table pet;
+-- table 삭제: DDLdrop table pet;
 show tables;
 
 -- insert: DML(C)
 insert
   into pet
-values ('성탄이', '안대혁', 'dog', 'm', '2007-12-25', null);
+	values ('성탄이', '안대혁', 'dog', 'm', '2007-12-25', null);
 insert
   into pet
-values ('성탄이2', '김대혁', 'dog', 'm', '2008-12-25', null);
+values ('성탄이2', '안대혁', 'dog', 'm', '2007-12-25', null);
+insert
+  into pet
+values ('성탄이3', '안대혁', 'dog', 'm', '2007-12-25', null);
 
+-- select: DML(R)
 select * from pet;
-    
+set sql_safe_updates=0;
+
+
+-- update: DML(U)
+update pet
+   set name='성타니'
+ where name = '성탄이'; 
+
+-- delete: DML(D)
+delete from pet where name = '성타니';
+
+-- load data
+load data local infile 'd:\pet.txt' into table pet;
+
+-- select
+select name, species from pet where name = '성타니';
+
+
+select name, species, gender
+	from pet
+	where species = 'dog'
+    and gender = 'f';
