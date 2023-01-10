@@ -8,8 +8,9 @@ hire_date as '입사일'
 from employees;
 
 select gender, count(*) from employees group by gender;
+select count(*) from employees;
 
-select count(*) from salaries where to_date >= '9999-01-01';
+select count(*) from salaries where to_date > '2023-01-01';
 
 select count(*) from departments;
 
