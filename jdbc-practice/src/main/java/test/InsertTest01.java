@@ -2,46 +2,40 @@ package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SelectionTest01 {
+public class InsertTest01 {
+
 	public static void main(String[] args) {
-		search("pat");
+		insert("기획2");
 	}
-	
-	public static void search(String keyword) {
+
+	private static boolean insert(String deptName) {
+		boolean result = false;
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet rs = null;
 		
 		try {
 			//1. JDBC Driver Class 로딩
 			Class.forName("org.mariadb.jdbc.Driver");
 			
 			//2. 연결하기
-			String url = "jdbc:mariadb://192.168.10.125:3307/employees?charset=utf8";
-			conn = DriverManager.getConnection(url, "hr", "hr");
+			String url = "jdbc:mariadb://192.168.10.125:3307/webdb?charset=utf8";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
 			//3. Statement 생성
 			stmt = conn.createStatement();
 			
 			//4. SQL 실행
 			String sql =
-				"select emp_no, first_name, last_name" + 
-			    "  from employees" +
-				" where first_name like '%" + keyword + "%'";
-			rs = stmt.executeQuery(sql);
+				" insert" +
+				"   into dept" +
+				" values (null, '" + deptName + "')";
+			int count = stmt.executeUpdate(sql);
 			
-			//5. 결과 처리
-			while(rs.next()) {
-				Long empNo = rs.getLong(1);
-				String firstName = rs.getString(2);
-				String lastName = rs.getString(3);
-				
-				System.out.println(empNo + ":" + firstName + ":" + lastName);
-			}
+			//5. 결과처리
+			result = count == 1;
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
@@ -49,10 +43,6 @@ public class SelectionTest01 {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(rs != null) {
-					rs.close();
-				}
-				
 				if(stmt != null) {
 					stmt.close();
 				}
@@ -64,5 +54,7 @@ public class SelectionTest01 {
 				e.printStackTrace();
 			}
 		}
+		
+		return result;
 	}
 }
