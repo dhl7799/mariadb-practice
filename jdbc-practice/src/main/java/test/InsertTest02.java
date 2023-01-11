@@ -2,20 +2,20 @@ package test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DeleteTest01 {
+public class InsertTest02 {
 
 	public static void main(String[] args) {
-		boolean result = delete(5L);
-		System.out.println(result ? "성공" : "실패");
+		insert("기획2");
 	}
 
-	private static boolean delete(long no) {
+	private static boolean insert(String deptName) {
 		boolean result = false;
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		
 		try {
 			//1. JDBC Driver Class 로딩
@@ -26,14 +26,19 @@ public class DeleteTest01 {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
 			//3. Statement 생성
-			stmt = conn.createStatement();
+			
 			
 			//4. SQL 실행
 			String sql =
-				"delete" + 
-				"  from dept" + 
-				" where no = " + no;
+				" insert" +
+				"   into dept" +
+				" values (null, '" + deptName + "')";
+			
+			stmt = conn.prepareStatement(sql);
 			int count = stmt.executeUpdate(sql);
+			
+			//4. binding
+			stmt.setString(1, deptName);
 			
 			//5. 결과처리
 			result = count == 1;
@@ -56,7 +61,6 @@ public class DeleteTest01 {
 			}
 		}
 		
-		return result;		
+		return result;
 	}
-
 }

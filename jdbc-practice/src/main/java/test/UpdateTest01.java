@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UpdateTest {
+public class UpdateTest01 {
 
 	public static void main(String[] args) {
 		DeptVo vo = new DeptVo();
@@ -26,7 +26,7 @@ public class UpdateTest {
 			Class.forName("org.mariadb.jdbc.Driver");
 			
 			//2. 연결하기
-			String url = "jdbc:mariadb://192.168.10.125:3307/webdb?charset=utf8";
+			String url = "jdbc:mariadb://192.168.0.19:3307/webdb?charset=utf8";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 			
 			//3. Statement 생성
