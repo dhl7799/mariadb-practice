@@ -9,7 +9,7 @@ public class BookMall {
 		UserVo user = null;
 		boolean notDone = true;
 		while(notDone) {
-			System.out.print("1. 로그인 2. 회원가입>");
+			System.out.print("1. 로그인 2. 회원가입(간단테스트는 BookMallTest에서)>");
 			int select = Integer.parseInt(scanner.nextLine());
 			if(select == 1) {
 				user = signIn();
@@ -47,6 +47,7 @@ public class BookMall {
 		}
 	}
 	
+
 
 
 	private static void signUp() {

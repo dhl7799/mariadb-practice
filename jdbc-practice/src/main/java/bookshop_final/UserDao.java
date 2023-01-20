@@ -17,7 +17,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			String sql = "insert into user "
 					+ "value (?,?,?,?)";
@@ -55,7 +55,7 @@ public class UserDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			
 			String sql ="select password" + 
@@ -99,7 +99,7 @@ public class UserDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			
 			String sql ="select *" + 
@@ -137,17 +137,49 @@ public class UserDao {
 		
 	}
 	
-	private Connection getConnection() throws SQLException {
+	public List<UserVo> getAllUserInfo() {
+	List<UserVo> result = new ArrayList<>();
 		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.0.19:3307/bookmall?charset=utf8";
-			conn = DriverManager.getConnection(url, "bookmall", "bookmall");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
+			conn = ConnectionControl.getConnection();
+			
+			String sql ="select *" + 
+				    "from user";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				UserVo vo = new UserVo();
+				vo.setEmail(rs.getString(1));
+				vo.setName(rs.getString(2));
+				vo.setPhoneNumber(rs.getString(3));
+				vo.setPassword(rs.getString(4));
+				result.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Error [getUserInfo]: " + e);
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("Error [getUserInfo_fin]: " + e);
+			}
 		}
-		
-		return conn;
+		return result;
 	}
+
 }

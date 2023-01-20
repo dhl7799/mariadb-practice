@@ -20,7 +20,7 @@ public class BookDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = conn = ConnectionControl.getConnection();
 			
 			String sql ="select * from book";
 			pstmt = conn.prepareStatement(sql);
@@ -63,7 +63,7 @@ public class BookDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = getConnection();
+			conn = conn = ConnectionControl.getConnection();
 			
 			String sql = "insert into book values(null, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
@@ -99,7 +99,7 @@ public class BookDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			String sql ="select * from book where no = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -143,7 +143,7 @@ public class BookDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			String sql ="select * from book where title = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -187,7 +187,7 @@ public class BookDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			String sql ="select * from book where category_no = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -226,17 +226,4 @@ public class BookDao {
 		return result;
 	}
 	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.0.19:3307/bookmall?charset=utf8";
-			conn = DriverManager.getConnection(url, "bookmall", "bookmall");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
-		
-		return conn;
-	}
 }

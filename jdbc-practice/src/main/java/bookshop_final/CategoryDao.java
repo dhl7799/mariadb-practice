@@ -17,7 +17,7 @@ public class CategoryDao {
 		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			
 			String sql ="select *" + 
@@ -60,7 +60,7 @@ public class CategoryDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
+			conn = ConnectionControl.getConnection();
 			
 			String sql = "insert into category values(null,?)";
 			pstmt = conn.prepareStatement(sql);
@@ -84,18 +84,5 @@ public class CategoryDao {
 			}
 		}
 	}
-	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.0.19:3307/bookmall?charset=utf8";
-			conn = DriverManager.getConnection(url, "bookmall", "bookmall");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
-		
-		return conn;
-	}
+
 }
